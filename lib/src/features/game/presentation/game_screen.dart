@@ -66,7 +66,7 @@ class _GameScreenState extends ConsumerState<GameScreen> {
                                 padding: const EdgeInsets.all(5.0),
                                 child: Row(
                                   children: [
-                                    Text("Score : 100"),
+                                    Text("Score : ${scoreState.toString()}"),
                                     SizedBox(
                                       width: 15,
                                     ),
