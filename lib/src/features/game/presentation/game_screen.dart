@@ -1,23 +1,28 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:wordquest/src/features/game/controllers/current_word_state_notifier.dart';
 import 'package:wordquest/src/features/utils/constants.dart';
 import 'package:wordquest/src/features/utils/main_button.dart';
 import 'package:wordquest/src/features/utils/profile_widget.dart';
 import 'package:wordquest/src/features/utils/text_field_custom.dart';
 
-class GameScreen extends StatefulWidget {
+class GameScreen extends ConsumerStatefulWidget {
   const GameScreen({super.key});
 
   @override
-  State<GameScreen> createState() => _GameScreenState();
+  ConsumerState<GameScreen> createState() => _GameScreenState();
 }
 
-class _GameScreenState extends State<GameScreen> {
+class _GameScreenState extends ConsumerState<GameScreen> {
   final wordInputController = TextEditingController();
   final _formKey = GlobalKey<FormState>();
 
   @override
   Widget build(BuildContext context) {
+    Map currentWordState = ref.watch(currentWordControllerProvider);
+    String actualWord = currentWordState['word'];
+    String category = currentWordState["category"];
     return Scaffold(
       appBar: AppBar(
         automaticallyImplyLeading: false,
@@ -182,7 +187,8 @@ class _GameScreenState extends State<GameScreen> {
                                                   fontWeight: FontWeight.w400),
                                               children: [
                                                 TextSpan(
-                                                    text: "3 letter ",
+                                                    text:
+                                                        "${actualWord.length} letter ",
                                                     style: TextStyle(
                                                         color:
                                                             Color(0xFF082163),
@@ -192,7 +198,8 @@ class _GameScreenState extends State<GameScreen> {
                                                   text: "word. It starts with",
                                                 ),
                                                 TextSpan(
-                                                    text: " B ",
+                                                    text:
+                                                        " ${actualWord[0].toUpperCase()} ",
                                                     style: TextStyle(
                                                         color:
                                                             Color(0xFF082163),
@@ -202,7 +209,8 @@ class _GameScreenState extends State<GameScreen> {
                                                   text: "and ends with",
                                                 ),
                                                 TextSpan(
-                                                    text: " D. ",
+                                                    text:
+                                                        " ${actualWord[actualWord.length - 1].toUpperCase()}. ",
                                                     style: TextStyle(
                                                         color:
                                                             Color(0xFF082163),
@@ -213,7 +221,7 @@ class _GameScreenState extends State<GameScreen> {
                                                       "The word falls under the",
                                                 ),
                                                 TextSpan(
-                                                    text: " animal ",
+                                                    text: " ${category} ",
                                                     style: TextStyle(
                                                         color:
                                                             Color(0xFF082163),
@@ -224,13 +232,6 @@ class _GameScreenState extends State<GameScreen> {
                                                       "category. Can you guess the word?",
                                                 ),
                                               ])),
-                                      // Text(
-                                      //   "I am thinking of a 3 letter word. It starts with B and ends with D. The word falls under the animal category. Can you guess the word",
-                                      //   style: TextStyle(
-                                      //     fontSize: 16,
-                                      //     fontWeight: FontWeight.w400,
-                                      //   ),
-                                      // ),
                                     ],
                                   ),
                                 ),

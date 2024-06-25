@@ -1,19 +1,26 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:wordquest/src/features/game/controllers/current_word_state_notifier.dart';
+import 'package:wordquest/src/features/game/data/game_repository.dart';
 import 'package:wordquest/src/features/game/presentation/game_screen.dart';
 import 'package:wordquest/src/features/utils/main_button.dart';
 
-class HomeScreen extends StatefulWidget {
+class HomeScreen extends ConsumerStatefulWidget {
   const HomeScreen({super.key});
 
   @override
-  State<HomeScreen> createState() => _HomeScreenState();
+  ConsumerState<HomeScreen> createState() => _HomeScreenState();
 }
 
-class _HomeScreenState extends State<HomeScreen> {
+class _HomeScreenState extends ConsumerState<HomeScreen> {
+  bool isButtonDisabled = false;
   @override
   Widget build(BuildContext context) {
+    GameRepo gameRepo = GameRepo.instance;
+    CurrentWordController currentWordController =
+        ref.read(currentWordControllerProvider.notifier);
     return Scaffold(
       appBar: AppBar(
         title: const Text('WordQuest'),
@@ -93,12 +100,28 @@ class _HomeScreenState extends State<HomeScreen> {
                   SizedBox(
                       width: 320,
                       child: MainButton(
+                          disabled: isButtonDisabled,
                           text: "Start game",
                           onpressed: () {
+                            setState(() {
+                              isButtonDisabled = true;
+                            });
+
+                            try {
+                              Map word = gameRepo.getWord();
+                              currentWordController.setNewWord(word);
+                            } catch (e) {
+                              print("there was an error retrieving the word");
+                            }
+
                             Navigator.push(
                                 context,
                                 MaterialPageRoute(
                                     builder: (context) => GameScreen()));
+
+                            setState(() {
+                              isButtonDisabled = false;
+                            });
                           })),
                   SizedBox(
                     height: 30,
