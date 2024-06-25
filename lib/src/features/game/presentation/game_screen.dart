@@ -1,17 +1,19 @@
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
-import 'package:wordquest/src/features/game/presentation/game_screen.dart';
 import 'package:wordquest/src/features/utils/main_button.dart';
+import 'package:wordquest/src/features/utils/text_field_custom.dart';
 
-class HomeScreen extends StatefulWidget {
-  const HomeScreen({super.key});
+class GameScreen extends StatefulWidget {
+  const GameScreen({super.key});
 
   @override
-  State<HomeScreen> createState() => _HomeScreenState();
+  State<GameScreen> createState() => _GameScreenState();
 }
 
-class _HomeScreenState extends State<HomeScreen> {
+class _GameScreenState extends State<GameScreen> {
+  final wordInputController = TextEditingController();
+  final _formKey = GlobalKey<FormState>();
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -22,19 +24,19 @@ class _HomeScreenState extends State<HomeScreen> {
         SliverFillRemaining(
           child: SingleChildScrollView(
             child: Padding(
-              padding: const EdgeInsets.only(left: 10, right: 10, top: 50),
+              padding: const EdgeInsets.only(left: 10, right: 10, top: 20),
               child: Column(
                 mainAxisAlignment: MainAxisAlignment.center,
                 crossAxisAlignment: CrossAxisAlignment.center,
                 children: [
                   SizedBox(
-                    height: 300,
+                    height: 350,
                     child: Stack(
                       children: [
                         Positioned(
                           left: 0,
                           right: 0,
-                          bottom: 50,
+                          bottom: 100,
                           child: Center(
                             child: Image.asset(
                                 "assets/images/game_character.png",
@@ -62,7 +64,7 @@ class _HomeScreenState extends State<HomeScreen> {
                                         CrossAxisAlignment.start,
                                     children: [
                                       Text(
-                                        "Hello Victor",
+                                        "Play",
                                         style: TextStyle(
                                             fontWeight: FontWeight.bold,
                                             fontSize: 20,
@@ -72,7 +74,7 @@ class _HomeScreenState extends State<HomeScreen> {
                                         height: 5,
                                       ),
                                       Text(
-                                        "Lets see how best you can read my mind by guessing the words I am thinking about.",
+                                        "I am thinking of a 3 letter word. It starts with B and ends with D. The word falls under the animal category. Can you guess the word",
                                         style: TextStyle(
                                           fontSize: 16,
                                           fontWeight: FontWeight.w400,
@@ -87,16 +89,23 @@ class _HomeScreenState extends State<HomeScreen> {
                     ),
                   ),
                   SizedBox(
-                    height: 60,
+                    height: 40,
+                  ),
+                  SizedBox(
+                    width: 320,
+                    child: Form(
+                        key: _formKey,
+                        child: TextFieldCustom(
+                            controller: wordInputController,
+                            label: "Type the word")),
+                  ),
+                  SizedBox(
+                    height: 20,
                   ),
                   SizedBox(
                       width: 320,
-                      child: MainButton(text: "Start game", onpressed: () {
-                        Navigator.push(
-                          context,
-                          MaterialPageRoute(
-                              builder: (context) => GameScreen()));
-                      })),
+                      child:
+                          MainButton(text: "Take a guess", onpressed: () {})),
                   SizedBox(
                     height: 30,
                   )
