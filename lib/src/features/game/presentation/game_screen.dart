@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:wordquest/src/features/game/controllers/current_word_state_notifier.dart';
+import 'package:wordquest/src/features/game/controllers/score_state_controller.dart';
 import 'package:wordquest/src/features/game/data/game_repository.dart';
 import 'package:wordquest/src/features/utils/constants.dart';
 import 'package:wordquest/src/features/utils/main_button.dart';
@@ -26,7 +27,10 @@ class _GameScreenState extends ConsumerState<GameScreen> {
     GameRepo gameRepo = GameRepo.instance;
     CurrentWordController currentWordController =
         ref.read(currentWordControllerProvider.notifier);
+    ScoreStateController scoreStateController =
+        ref.read(scoreStateControllerProvider.notifier);
     Map currentWordState = ref.watch(currentWordControllerProvider);
+    double scoreState = ref.watch(scoreStateControllerProvider);
     String actualWord = currentWordState['word'];
     String category = currentWordState["category"];
     return Scaffold(
@@ -40,7 +44,7 @@ class _GameScreenState extends ConsumerState<GameScreen> {
             child: Padding(
               padding:
                   const EdgeInsets.only(left: 10, right: 10, top: 5, bottom: 5),
-              child: Text('0'),
+              child: Text(scoreState.toString()),
             )),
         actions: [
           GestureDetector(
@@ -349,6 +353,7 @@ class _GameScreenState extends ConsumerState<GameScreen> {
 
                               if (userInput.toLowerCase() ==
                                   actualWord.toLowerCase()) {
+                                scoreStateController.setNewScore(10);
                                 setState(() {
                                   resultState = true;
                                   isCorrect = true;
