@@ -28,13 +28,13 @@ class _HomeScreenState extends State<HomeScreen> {
                 crossAxisAlignment: CrossAxisAlignment.center,
                 children: [
                   SizedBox(
-                    height: 300,
+                    height: 340,
                     child: Stack(
                       children: [
                         Positioned(
                           left: 0,
                           right: 0,
-                          bottom: 50,
+                          bottom: 90,
                           child: Center(
                             child: Image.asset(
                                 "assets/images/game_character.png",
@@ -74,9 +74,10 @@ class _HomeScreenState extends State<HomeScreen> {
                                       Text(
                                         "Lets see how best you can read my mind by guessing the words I am thinking about.",
                                         style: TextStyle(
-                                          fontSize: 16,
+                                          fontSize: 17,
                                           fontWeight: FontWeight.w400,
                                         ),
+                                        textScaler: TextScaler.linear(1.1),
                                       ),
                                     ],
                                   ),
@@ -91,12 +92,14 @@ class _HomeScreenState extends State<HomeScreen> {
                   ),
                   SizedBox(
                       width: 320,
-                      child: MainButton(text: "Start game", onpressed: () {
-                        Navigator.push(
-                          context,
-                          MaterialPageRoute(
-                              builder: (context) => GameScreen()));
-                      })),
+                      child: MainButton(
+                          text: "Start game",
+                          onpressed: () {
+                            Navigator.push(
+                                context,
+                                MaterialPageRoute(
+                                    builder: (context) => GameScreen()));
+                          })),
                   SizedBox(
                     height: 30,
                   )

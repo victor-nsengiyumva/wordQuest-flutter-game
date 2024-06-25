@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
+import 'package:wordquest/src/features/utils/constants.dart';
 import 'package:wordquest/src/features/utils/main_button.dart';
+import 'package:wordquest/src/features/utils/profile_widget.dart';
 import 'package:wordquest/src/features/utils/text_field_custom.dart';
 
 class GameScreen extends StatefulWidget {
@@ -18,7 +20,104 @@ class _GameScreenState extends State<GameScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text('WordQuest'),
+        automaticallyImplyLeading: false,
+        title: Container(
+            margin: EdgeInsets.only(left: 5, top: 5),
+            decoration: BoxDecoration(
+                borderRadius: BorderRadius.circular(10),
+                border: Border.all(color: Constants.primaryColor)),
+            child: Padding(
+              padding:
+                  const EdgeInsets.only(left: 10, right: 10, top: 5, bottom: 5),
+              child: Text('0'),
+            )),
+        actions: [
+          GestureDetector(
+            onTap: () {
+              showModalBottomSheet(
+                  backgroundColor: Colors.white,
+                  context: context,
+                  builder: (context) {
+                    return SizedBox(
+                      height: 160,
+                      child: Column(
+                        children: [
+                          Padding(
+                            padding: const EdgeInsets.only(
+                                left: 10, right: 10, top: 10, bottom: 10),
+                            child: Container(
+                              height: 60,
+                              child: Padding(
+                                padding: const EdgeInsets.all(5.0),
+                                child: Row(
+                                  children: [
+                                    Text("Score : 100"),
+                                    SizedBox(
+                                      width: 15,
+                                    ),
+                                    Spacer(),
+                                    TextButton(
+                                      child: Text(
+                                        "Reset",
+                                        style: TextStyle(
+                                            color: Constants.primaryColor,
+                                            fontSize: 17,
+                                            fontWeight: FontWeight.bold),
+                                      ),
+                                      onPressed: () {},
+                                    )
+                                  ],
+                                ),
+                              ),
+                            ),
+                          ),
+                          Padding(
+                            padding: const EdgeInsets.only(
+                                left: 10, right: 10, top: 10, bottom: 10),
+                            child: Container(
+                              height: 60,
+                              child: Padding(
+                                padding: const EdgeInsets.all(5.0),
+                                child: Row(
+                                  children: [
+                                    Column(
+                                      crossAxisAlignment:
+                                          CrossAxisAlignment.start,
+                                      mainAxisAlignment:
+                                          MainAxisAlignment.center,
+                                      children: [Text("name"), Text("email")],
+                                    ),
+                                    SizedBox(
+                                      width: 15,
+                                    ),
+                                    Spacer(),
+                                    Padding(
+                                      padding: const EdgeInsets.only(right: 5),
+                                      child: InkWell(
+                                        onTap: () {},
+                                        child: Icon(
+                                          Icons.logout,
+                                          color: Colors.red,
+                                          size: 30,
+                                        ),
+                                      ),
+                                    )
+                                  ],
+                                ),
+                              ),
+                            ),
+                          ),
+                        ],
+                      ),
+                    );
+                  });
+            },
+            child: Padding(
+              padding: const EdgeInsets.only(right: 10.0),
+              child: ProfileWidget(firstLetter: "v"),
+            ),
+          )
+        ],
       ),
       body: CustomScrollView(slivers: [
         SliverFillRemaining(
@@ -73,13 +172,65 @@ class _GameScreenState extends State<GameScreen> {
                                       SizedBox(
                                         height: 5,
                                       ),
-                                      Text(
-                                        "I am thinking of a 3 letter word. It starts with B and ends with D. The word falls under the animal category. Can you guess the word",
-                                        style: TextStyle(
-                                          fontSize: 16,
-                                          fontWeight: FontWeight.w400,
-                                        ),
-                                      ),
+                                      RichText(
+                                          textScaler: TextScaler.linear(1.1),
+                                          text: TextSpan(
+                                              text: "I am thinking of a ",
+                                              style: TextStyle(
+                                                  color: Colors.black,
+                                                  fontSize: 17,
+                                                  fontWeight: FontWeight.w400),
+                                              children: [
+                                                TextSpan(
+                                                    text: "3 letter ",
+                                                    style: TextStyle(
+                                                        color:
+                                                            Color(0xFF082163),
+                                                        fontWeight:
+                                                            FontWeight.bold)),
+                                                TextSpan(
+                                                  text: "word. It starts with",
+                                                ),
+                                                TextSpan(
+                                                    text: " B ",
+                                                    style: TextStyle(
+                                                        color:
+                                                            Color(0xFF082163),
+                                                        fontWeight:
+                                                            FontWeight.bold)),
+                                                TextSpan(
+                                                  text: "and ends with",
+                                                ),
+                                                TextSpan(
+                                                    text: " D. ",
+                                                    style: TextStyle(
+                                                        color:
+                                                            Color(0xFF082163),
+                                                        fontWeight:
+                                                            FontWeight.bold)),
+                                                TextSpan(
+                                                  text:
+                                                      "The word falls under the",
+                                                ),
+                                                TextSpan(
+                                                    text: " animal ",
+                                                    style: TextStyle(
+                                                        color:
+                                                            Color(0xFF082163),
+                                                        fontWeight:
+                                                            FontWeight.bold)),
+                                                TextSpan(
+                                                  text:
+                                                      "category. Can you guess the word?",
+                                                ),
+                                              ])),
+                                      // Text(
+                                      //   "I am thinking of a 3 letter word. It starts with B and ends with D. The word falls under the animal category. Can you guess the word",
+                                      //   style: TextStyle(
+                                      //     fontSize: 16,
+                                      //     fontWeight: FontWeight.w400,
+                                      //   ),
+                                      // ),
                                     ],
                                   ),
                                 ),
