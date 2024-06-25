@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:wordquest/src/features/game/controllers/current_word_state_notifier.dart';
+import 'package:wordquest/src/features/game/data/game_repository.dart';
 import 'package:wordquest/src/features/utils/constants.dart';
 import 'package:wordquest/src/features/utils/main_button.dart';
 import 'package:wordquest/src/features/utils/profile_widget.dart';
@@ -17,9 +18,14 @@ class GameScreen extends ConsumerStatefulWidget {
 class _GameScreenState extends ConsumerState<GameScreen> {
   final wordInputController = TextEditingController();
   final _formKey = GlobalKey<FormState>();
+  bool resultState = false;
+  bool isCorrect = false;
 
   @override
   Widget build(BuildContext context) {
+    GameRepo gameRepo = GameRepo.instance;
+    CurrentWordController currentWordController =
+        ref.read(currentWordControllerProvider.notifier);
     Map currentWordState = ref.watch(currentWordControllerProvider);
     String actualWord = currentWordState['word'];
     String category = currentWordState["category"];
@@ -134,13 +140,13 @@ class _GameScreenState extends ConsumerState<GameScreen> {
                 crossAxisAlignment: CrossAxisAlignment.center,
                 children: [
                   SizedBox(
-                    height: 350,
+                    height: 360,
                     child: Stack(
                       children: [
                         Positioned(
                           left: 0,
                           right: 0,
-                          bottom: 100,
+                          bottom: 110,
                           child: Center(
                             child: Image.asset(
                                 "assets/images/game_character.png",
@@ -241,23 +247,120 @@ class _GameScreenState extends ConsumerState<GameScreen> {
                     ),
                   ),
                   SizedBox(
-                    height: 40,
+                    height: 30,
                   ),
-                  SizedBox(
-                    width: 320,
-                    child: Form(
-                        key: _formKey,
-                        child: TextFieldCustom(
-                            controller: wordInputController,
-                            label: "Type the word")),
-                  ),
+                  resultState
+                      ? isCorrect
+                          ? Container(
+                              decoration: BoxDecoration(
+                                  border: Border.all(color: Colors.green),
+                                  borderRadius: BorderRadius.circular(10),
+                                  color:
+                                      const Color.fromARGB(255, 202, 243, 203)),
+                              width: 320,
+                              child: Padding(
+                                padding: const EdgeInsets.only(
+                                    left: 20, right: 20, bottom: 10, top: 10),
+                                child: Column(
+                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                  children: [
+                                    Text(
+                                      "Correct!",
+                                      style: TextStyle(
+                                          fontWeight: FontWeight.bold,
+                                          fontSize: 20,
+                                          color:
+                                              Color.fromARGB(255, 1, 70, 22)),
+                                    ),
+                                    SizedBox(
+                                      height: 5,
+                                    ),
+                                    Text(
+                                      "Fantastic. You guessed it right. Let's see if you can guess the next one",
+                                      style: TextStyle(
+                                          color: Colors.black,
+                                          fontSize: 17,
+                                          fontWeight: FontWeight.w400),
+                                    )
+                                  ],
+                                ),
+                              ),
+                            )
+                          : Container(
+                              decoration: BoxDecoration(
+                                  border: Border.all(color: Colors.red),
+                                  borderRadius: BorderRadius.circular(10),
+                                  color: Color.fromARGB(255, 250, 193, 189)),
+                              width: 320,
+                              child: Padding(
+                                padding: const EdgeInsets.only(
+                                    left: 20, right: 20, bottom: 10, top: 10),
+                                child: Column(
+                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                  children: [
+                                    Text(
+                                      "Incorrect!",
+                                      style: TextStyle(
+                                          fontWeight: FontWeight.bold,
+                                          fontSize: 20,
+                                          color: const Color.fromARGB(
+                                              255, 117, 11, 4)),
+                                    ),
+                                    SizedBox(
+                                      height: 5,
+                                    ),
+                                    Text(
+                                      "Nice try, but not quite. The correct word was ${actualWord.toUpperCase()}",
+                                      style: TextStyle(
+                                          color: Colors.black,
+                                          fontSize: 17,
+                                          fontWeight: FontWeight.w400),
+                                    )
+                                  ],
+                                ),
+                              ),
+                            )
+                      : SizedBox(
+                          width: 320,
+                          child: Form(
+                              key: _formKey,
+                              child: TextFieldCustom(
+                                  controller: wordInputController,
+                                  label: "Type the word")),
+                        ),
                   SizedBox(
                     height: 20,
                   ),
                   SizedBox(
                       width: 320,
-                      child:
-                          MainButton(text: "Take a guess", onpressed: () {})),
+                      child: MainButton(
+                          text: resultState ? "Guess again" : "Take a guess",
+                          onpressed: () {
+                            if (resultState) {
+                              Map word = gameRepo.getWord();
+                              currentWordController.setNewWord(word);
+                              setState(() {
+                                resultState = false;
+                                isCorrect = false;
+                              });
+                              wordInputController.clear();
+                            } else {
+                              String userInput = wordInputController.text;
+
+                              if (userInput.toLowerCase() ==
+                                  actualWord.toLowerCase()) {
+                                setState(() {
+                                  resultState = true;
+                                  isCorrect = true;
+                                });
+                              } else {
+                                setState(() {
+                                  resultState = true;
+                                  isCorrect = false;
+                                });
+                              }
+                            }
+                          })),
                   SizedBox(
                     height: 30,
                   )
