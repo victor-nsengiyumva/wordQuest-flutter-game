@@ -25,6 +25,16 @@ WordGame
    
     ```bash
     flutter run
+
+## Issues encountered during development
+I encountered an authentication error when connecting my Flutter app to Firebase. The app failed to authenticate users despite correct API key configuration.
+
+### Solutions to the issue
+   1. **Identifying the Issue**: Checked Firebase console for error logs, which pointed to a misconfigured OAuth client ID.
+   2. **Research**: Reviewed Firebase documentation and community forums for similar issues.
+   3. **Troubleshooting Steps**: Updated OAuth client ID in Firebase console to match the one in my app’s configuration files.
+   4. **Solution**: Successfully authenticated users after ensuring all credentials matched across Firebase and app settings.
+
     
 ## :iphone: Screens
 
