@@ -44,7 +44,7 @@ Login | Sign up | Home Screen |
 Game Screen | Correct Response | Wrong Response |
 ![](./app_ui_images/game_screen.jpg) | ![](./app_ui_images/correct.jpg) | ![](./app_ui_images/incorrect.jpg) |
 Reset score & Logout |
-![](./app_ui_images/Capture.jpg)
+![](./app_ui_images/Capture.JPG)
 
 ## 🚀 Technologies
 - Flutter 3.19.3
