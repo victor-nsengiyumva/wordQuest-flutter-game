@@ -3,7 +3,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:wordquest/firebase_options.dart';
 import 'package:wordquest/src/features/authentication/presentation/login.dart';
-import 'package:wordquest/src/features/game/presentation/home.dart';
 
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();

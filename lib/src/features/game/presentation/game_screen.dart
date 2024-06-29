@@ -1,6 +1,9 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/widgets.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:wordquest/src/features/authentication/controller.dart/current_user_controller.dart';
+import 'package:wordquest/src/features/authentication/data/user_model.dart';
+import 'package:wordquest/src/features/authentication/presentation/login.dart';
 import 'package:wordquest/src/features/game/controllers/current_word_state_notifier.dart';
 import 'package:wordquest/src/features/game/controllers/score_state_controller.dart';
 import 'package:wordquest/src/features/game/data/game_repository.dart';
@@ -24,6 +27,8 @@ class _GameScreenState extends ConsumerState<GameScreen> {
 
   @override
   Widget build(BuildContext context) {
+    UserModel currentUser = ref.watch(currentUserControllerProvider);
+
     GameRepo gameRepo = GameRepo.instance;
     CurrentWordController currentWordController =
         ref.read(currentWordControllerProvider.notifier);
@@ -66,7 +71,13 @@ class _GameScreenState extends ConsumerState<GameScreen> {
                                 padding: const EdgeInsets.all(5.0),
                                 child: Row(
                                   children: [
-                                    Text("Score : ${scoreState.toString()}"),
+                                    Text(
+                                      "Score : ${scoreState.toString()}",
+                                      style: TextStyle(
+                                          color: Colors.black,
+                                          fontSize: 17,
+                                          fontWeight: FontWeight.bold),
+                                    ),
                                     SizedBox(
                                       width: 15,
                                     ),
@@ -79,7 +90,9 @@ class _GameScreenState extends ConsumerState<GameScreen> {
                                             fontSize: 17,
                                             fontWeight: FontWeight.bold),
                                       ),
-                                      onPressed: () {},
+                                      onPressed: () {
+                                        scoreStateController.resetScore();
+                                      },
                                     )
                                   ],
                                 ),
@@ -100,7 +113,22 @@ class _GameScreenState extends ConsumerState<GameScreen> {
                                           CrossAxisAlignment.start,
                                       mainAxisAlignment:
                                           MainAxisAlignment.center,
-                                      children: [Text("name"), Text("email")],
+                                      children: [
+                                        Text(
+                                          "${currentUser.username}",
+                                          style: TextStyle(
+                                              color: Colors.black,
+                                              fontSize: 17,
+                                              fontWeight: FontWeight.bold),
+                                        ),
+                                        Text(
+                                          "${currentUser.email}",
+                                          style: TextStyle(
+                                              color: Colors.black,
+                                              fontSize: 17,
+                                              fontWeight: FontWeight.bold),
+                                        )
+                                      ],
                                     ),
                                     SizedBox(
                                       width: 15,
@@ -109,7 +137,18 @@ class _GameScreenState extends ConsumerState<GameScreen> {
                                     Padding(
                                       padding: const EdgeInsets.only(right: 5),
                                       child: InkWell(
-                                        onTap: () {},
+                                        onTap: () async {
+                                          await FirebaseAuth.instance.signOut();
+
+                                          Navigator.of(context)
+                                              .pushAndRemoveUntil(
+                                            MaterialPageRoute(
+                                                builder: (context) =>
+                                                    const LoginScreen()),
+                                            (Route<dynamic> route) =>
+                                                false, // Remove all routes from the stack
+                                          );
+                                        },
                                         child: Icon(
                                           Icons.logout,
                                           color: Colors.red,

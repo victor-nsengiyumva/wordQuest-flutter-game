@@ -2,6 +2,8 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:wordquest/src/features/authentication/controller.dart/current_user_controller.dart';
+import 'package:wordquest/src/features/authentication/data/user_model.dart';
 import 'package:wordquest/src/features/game/controllers/current_word_state_notifier.dart';
 import 'package:wordquest/src/features/game/data/game_repository.dart';
 import 'package:wordquest/src/features/game/presentation/game_screen.dart';
@@ -21,6 +23,7 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
     GameRepo gameRepo = GameRepo.instance;
     CurrentWordController currentWordController =
         ref.read(currentWordControllerProvider.notifier);
+    UserModel currentUser = ref.watch(currentUserControllerProvider);
     return Scaffold(
       appBar: AppBar(
         title: const Text('WordQuest'),
@@ -69,7 +72,7 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
                                         CrossAxisAlignment.start,
                                     children: [
                                       Text(
-                                        "Hello Victor",
+                                        "Hello ${currentUser.username}",
                                         style: TextStyle(
                                             fontWeight: FontWeight.bold,
                                             fontSize: 20,
