@@ -25,22 +25,24 @@ WordGame
    
     ```bash
     flutter run
+
+## Issues encountered during development
+I encountered an authentication error when connecting my Flutter app to Firebase. The app failed to authenticate users despite correct API key configuration.
+
+### Solutions to the issue
+   1. **Identifying the Issue**: Checked Firebase console for error logs, which pointed to a misconfigured OAuth client ID.
+   2. **Research**: Reviewed Firebase documentation and community forums for similar issues.
+   3. **Troubleshooting Steps**: Updated OAuth client ID in Firebase console to match the one in my app’s configuration files.
+   4. **Solution**: Successfully authenticated users after ensuring all credentials matched across Firebase and app settings.
+
     
 ## :iphone: Screens
 
-Landing Screen | Take Test Screen | Test Results Screen |
+Login | Sign up | Home Screen |
 :------------:|:-----------:|:--------------:|
-![](./app_ui_images/landing_screen.jpg) | ![](./app_ui_images/take_test.jpg) | ![](./app_ui_images/test_results.jpg)
-Select Doctor | Make Appointment | Process Payment |
-![](./app_ui_images/select_doctor.jpg) | ![](./app_ui_images/make_appointment.jpg) | ![](./app_ui_images/process_payment.jpg)
-Successful Payment | Pending Appointments | Enter Call Id |
-![](./app_ui_images/successful_payment.jpg) | ![](./app_ui_images/pending_appointments.jpg) | ![](./app_ui_images/enter_call_id.jpg)
-Video Session | Test History Screen | Test History Details |
-![](./app_ui_images/video_call_screen.jpg) | ![](./app_ui_images/test_history_screen.jpg) | ![](./app_ui_images/test_history.jpg)
-Doctor Details | Receipts Screen | User Profile |
-![](./app_ui_images/doctor_details.jpg) | ![](./app_ui_images/receipts.jpg) | ![](./app_ui_images/user_profile.jpg)
-Loading State | Empty lists Screen | Network Error Screen |
-![](./app_ui_images/loading_state.jpg) | ![](./app_ui_images/empty_list_screen.jpg) | ![](./app_ui_images/network_error.jpg)
+![](./app_ui_images/login.jpg) | ![](./app_ui_images/signup.jpg) | ![](./app_ui_images/homeScreen.jpg) |
+Game Screen | Correct Response | Wrong Response |
+![](./app_ui_images/game_screen.jpg) | ![](./app_ui_images/correct.jpg) | ![](./app_ui_images/incorrect.jpg) |
 
 
 ## 🚀 Technologies
