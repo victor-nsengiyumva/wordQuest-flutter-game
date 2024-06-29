@@ -1,5 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:wordquest/src/features/authentication/data/auth_repository.dart';
+import 'package:wordquest/src/features/authentication/presentation/login.dart';
+import 'package:wordquest/src/features/utils/custom_snackBar.dart';
 import 'package:wordquest/src/features/utils/main_button.dart';
 import 'package:wordquest/src/features/utils/text_field_custom.dart';
 
@@ -24,7 +27,7 @@ class _SignUpScreenState extends ConsumerState<SignUpScreen> {
 
   @override
   Widget build(BuildContext context) {
-    // AuthRepo authRepo = AuthRepo.instance;
+    final value = ref.read(authRepositoryProvider);
     return Scaffold(
       backgroundColor: Colors.white,
       body: Padding(
@@ -95,6 +98,26 @@ class _SignUpScreenState extends ConsumerState<SignUpScreen> {
                       text: "Sign Up",
                       onpressed: () async {
                         if (_formKey.currentState!.validate()) {
+                          setState(() {
+                            buttonActive = false;
+                          });
+                          String response = await value.register(
+                              emailController.text,
+                              passwordController.text,
+                              nameController.text
+                              );
+                          if (response == "success") {
+                            Navigator.push(
+                                context,
+                                MaterialPageRoute(
+                                    builder: (context) => const LoginScreen()));
+                          } else {
+                            CustomSnackBar.show(context, response, true);
+                            setState(() {
+                              buttonActive = true;
+                            });
+                          }
+
                           // setState(() {
                           //   buttonActive = false;
                           // });

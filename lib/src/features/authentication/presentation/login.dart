@@ -1,6 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:wordquest/src/features/authentication/data/auth_repository.dart';
 import 'package:wordquest/src/features/authentication/presentation/signup.dart';
+import 'package:wordquest/src/features/game/presentation/home.dart';
+import 'package:wordquest/src/features/utils/custom_snackBar.dart';
 import 'package:wordquest/src/features/utils/main_button.dart';
 import 'package:wordquest/src/features/utils/text_field_custom.dart';
 
@@ -25,11 +28,8 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
 
   @override
   Widget build(BuildContext context) {
-    // AuthRepo authRepo = AuthRepo.instance;
-    // var currentDiagnosisState = ref.watch(diagnosisControllerProvider);
+    final value = ref.watch(authRepositoryProvider);
 
-    // CurrentUserController currentUserState =
-    //     ref.read(currentUserControllerProvider.notifier);
     return Scaffold(
       backgroundColor: Colors.white,
       body: Padding(
@@ -126,6 +126,27 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
                         text: "Log in",
                         onpressed: () async {
                           if (_formKey.currentState!.validate()) {
+                            setState(() {
+                              buttonActive = false;
+                            });
+                            String response = await value.signIn(
+                                emailController.text,
+                                passwordController.text,
+                                ref);
+
+                            if (response == "success") {
+                              Navigator.pushAndRemoveUntil(
+                                  context,
+                                  MaterialPageRoute(
+                                      builder: (context) => const HomeScreen()),
+                                  (route) => false);
+                            } else {
+                              CustomSnackBar.show(context, response, true);
+                              setState(() {
+                                buttonActive = true;
+                              });
+                            }
+
                             // If the form is valid, display a snackbar. In the real world,
                             // you'd often call a server or save the information in a database.
 
